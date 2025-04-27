@@ -1,10 +1,10 @@
-import Header from './components/Header';
-import SearchBar from './components/SearchBar';
-import MapView from './components/MapView';
-import CategoryButtons from './components/CategoryButtons';
-import PopularHotspots from './components/PopularHotspots';
-import AddHotspotBanner from './components/AddHotspotBanner';
-import Footer from './components/Footer';
+import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
+import MapView from "./components/MapView";
+import CategoryButtons from "./components/CategoryButtons";
+import PopularHotspots from "./components/PopularHotspots";
+import AddHotspotBanner from "./components/AddHotspotBanner";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
