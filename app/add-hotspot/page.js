@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createHotspot } from "../../lib/utils/api-client";
+import UploadThingUploader from "../components/ui/UploadThingUploader";
 
 export default function AddHotspot() {
   const router = useRouter();
@@ -12,14 +13,13 @@ export default function AddHotspot() {
     location: "",
     category: "",
     description: "",
-    image: "",
+    image: "", // Will store the uploadthing URL
     addedBy: "Anonymous", // Default value
   });
-  
+
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   const handleChange = (e) => {
@@ -28,7 +28,7 @@ export default function AddHotspot() {
       ...prev,
       [id]: value,
     }));
-    
+
     // Clear the error for this field when user makes changes
     if (errors[id]) {
       setErrors((prev) => ({
@@ -38,62 +38,59 @@ export default function AddHotspot() {
     }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Store the file for later upload
-    setImageFile(file);
-    
-    // Create a preview URL
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
-    
-    // For now, store the file name in formData
-    // In a real implementation, you would upload to storage and get a URL
+  const handleImageUploadComplete = (url) => {
     setFormData((prev) => ({
       ...prev,
-      image: `/images/uploads/${file.name}`, // This is a placeholder path
+      image: url,
     }));
+
+    setImagePreview(url);
+
+    // Clear error if there was one
+    if (errors.image) {
+      setErrors((prev) => ({
+        ...prev,
+        image: "",
+      }));
+    }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // Validate required fields
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.location.trim()) newErrors.location = "Location is required";
     if (!formData.category) newErrors.category = "Category is required";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
-    
-    // For image - in a real app, you'd validate the file type and size too
-    if (!formData.image && !imageFile) newErrors.image = "An image is required";
-    
+    if (!formData.description.trim())
+      newErrors.description = "Description is required";
+
+    // For image - validate that we have an UploadThing URL
+    if (!formData.image) newErrors.image = "An image is required";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsSubmitting(true);
     setSubmitError("");
-    
+
     try {
-      // In a real implementation, you would:
-      // 1. Upload the image to a storage service and get a URL
-      // 2. Then create the hotspot record with the image URL
-      
-      // For this example, we'll assume the image path is correctly set in formData
+      // Since we already have the uploaded image URL, we can directly create the hotspot
       const hotspot = await createHotspot(formData);
-      
+
       // Success! Navigate to the newly created hotspot
       router.push(`/hotspot/${hotspot._id}`);
     } catch (error) {
       console.error("Error submitting hotspot:", error);
-      setSubmitError(error.message || "Failed to create hotspot. Please try again.");
+      setSubmitError(
+        error.message || "Failed to create hotspot. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -218,7 +215,9 @@ export default function AddHotspot() {
                 placeholder="Tell us about this place..."
               ></textarea>
               {errors.description && (
-                <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.description}
+                </p>
               )}
             </div>
 
@@ -229,59 +228,14 @@ export default function AddHotspot() {
               >
                 Upload Image
               </label>
-              <div 
-                className={`border-2 border-dashed ${
-                  errors.image ? "border-red-500" : "border-gray-300"
-                } rounded-md p-6 text-center cursor-pointer`}
-                onClick={() => document.getElementById("image").click()}
-              >
-                {imagePreview ? (
-                  <div className="relative h-48 w-full max-w-md mx-auto">
-                    <img 
-                      src={imagePreview} 
-                      alt="Preview" 
-                      className="h-full w-full object-cover rounded" 
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="mx-auto h-12 w-12 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <p className="mt-1 text-sm text-gray-600">
-                      Drag and drop an image file, or click to browse
-                    </p>
-                  </>
-                )}
-                <input 
-                  type="file" 
-                  id="image" 
-                  onChange={handleImageChange} 
-                  accept="image/*"
-                  className="opacity-0 h-0 w-0" 
-                />
-                <button
-                  type="button"
-                  className="mt-4 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    document.getElementById("image").click();
-                  }}
-                >
-                  {imageFile ? "Change Image" : "Select File"}
-                </button>
-              </div>
+              <UploadThingUploader
+                onUploadComplete={handleImageUploadComplete}
+              />
+              {imagePreview && (
+                <div className="mt-2 text-sm text-green-600">
+                  Image uploaded successfully!
+                </div>
+              )}
               {errors.image && (
                 <p className="text-red-500 text-sm mt-1">{errors.image}</p>
               )}
