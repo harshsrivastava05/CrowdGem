@@ -1,4 +1,3 @@
-// app/components/HotspotCard.jsx
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -9,7 +8,7 @@ export default function HotspotCard({ hotspot }) {
         <div className="relative h-48 w-full">
           {hotspot.image.startsWith('http') ? (
             // External image
-            <img
+            <Image
               src={hotspot.image}
               alt={hotspot.name}
               className="object-cover w-full h-full"

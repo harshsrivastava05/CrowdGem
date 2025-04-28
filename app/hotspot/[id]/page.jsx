@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
+"use client"
+import { useParams } from "next/navigation"; 
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HotspotDetail() {
-  const router = useRouter();
-  const { id } = router.query;
+  const params = useParams();
+  const id = params.id;
 
-  // In a real app, you would fetch the hotspot data based on the ID
   const hotspot = {
     id: id,
     name: "Central Park",
@@ -23,7 +23,11 @@ export default function HotspotDetail() {
         text: "Beautiful place to relax and unwind.",
         rating: 5,
       },
-      { user: "CityWanderer", text: "A must-visit when in NYC.", rating: 4 },
+      {
+        user: "CityWanderer",
+        text: "A must-visit when in NYC.",
+        rating: 4,
+      },
     ],
   };
 
@@ -46,13 +50,13 @@ export default function HotspotDetail() {
       </Link>
 
       <div className="bg-white rounded-lg overflow-hidden shadow-lg">
-        {/* // In hotspot/[id].js, update the image rendering */}
         <div className="relative h-64 md:h-96 w-full">
           {hotspot.image.startsWith("http") ? (
-            <img
+            <Image
               src={hotspot.image}
               alt={hotspot.name}
               className="object-cover w-full h-full"
+              fill
             />
           ) : (
             <Image
@@ -122,7 +126,6 @@ export default function HotspotDetail() {
                 <p className="text-gray-700 mt-1">{review.text}</p>
               </div>
             ))}
-
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition mt-4">
               Add Your Review
             </button>
@@ -132,3 +135,4 @@ export default function HotspotDetail() {
     </div>
   );
 }
+
