@@ -1,5 +1,5 @@
-import { connectToDatabase } from "@/lib/db/mongodb";
-import Hotspot from "@/lib/db/models/Hotspot";
+import { connectToDatabase } from "../../../lib/db/mongodb";
+import Hotspot from "../../../lib/db/models/Hotspot";
 import { NextResponse } from "next/server";
 
 // Get all hotspots

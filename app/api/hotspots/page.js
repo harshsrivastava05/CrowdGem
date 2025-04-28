@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getHotspots } from "@/lib/utils/api-client";
-import HotspotCard from "@/app/components/ui/HotspotCard";
+import { getHotspots } from "../../../lib/utils/api-client";
+import HotspotCard from "../../../app/components/ui/HotspotCard";
 
 export default function HotspotsPage() {
   const [hotspots, setHotspots] = useState([]);
