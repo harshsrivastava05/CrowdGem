@@ -46,7 +46,7 @@ export default function HotspotDetail() {
       </Link>
 
       <div className="bg-white rounded-lg overflow-hidden shadow-lg">
-        // In hotspot/[id].js, update the image rendering
+        {/* // In hotspot/[id].js, update the image rendering */}
         <div className="relative h-64 md:h-96 w-full">
           {hotspot.image.startsWith("http") ? (
             <img

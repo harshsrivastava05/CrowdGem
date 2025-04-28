@@ -6,7 +6,7 @@
         {/* Using Next.js Image component for the map background */}
         <div className="absolute inset-0">
           <Image
-            src="/public/map-background.jpg" // Replace with your map image path
+            src="/images/map-background.jpg" // Replace with your map image path
             alt="Map view"
             fill
             className="object-cover"
