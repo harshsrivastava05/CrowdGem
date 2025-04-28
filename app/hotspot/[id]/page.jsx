@@ -9,7 +9,7 @@ export default function HotspotDetail() {
 
   const hotspot = {
     id: id,
-    name: "Central Park",
+    name: "Central Park", 
     location: "New York, NY",
     description:
       "A vast urban park that offers a peaceful retreat from the hustle and bustle of the city. Features walking paths, lakes, and plenty of picnic spots.",
