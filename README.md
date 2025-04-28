@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CrowdGem
 
-## Getting Started
+Discover and share hidden gems around the world with **CrowdGem**.  
+Explore local hotspots, upload your own favorite places, and read real reviews — all in one simple platform.
 
-First, run the development server:
+## ✨ Features
+
+- 🌍 Browse popular hotspots categorized by location and type
+- 📸 Upload images and details of new places
+- 📝 Read and leave authentic reviews
+- 📂 Upload images securely using UploadThing
+- 📦 Full integration with MongoDB for storing hotspots and user data
+- 🧹 Built with Next.js 15, Tailwind CSS, UploadThing, MongoDB, and Mongoose
+- ⚡ Fast, mobile-responsive, and optimized for performance
+
+## 🚀 Technologies Used
+
+- **Next.js** (App Router)
+- **React.js**
+- **Tailwind CSS**
+- **MongoDB** (via Mongoose)
+- **UploadThing** (for file uploads)
+- **Vercel** (deployment)
+
+## 🛠️ Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/crowdgem.git
+cd crowdgem
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Set up environment variables
+
+Create a `.env.local` file at the root of your project:
+
+```plaintext
+MONGODB_URI=your_mongodb_connection_string
+UPLOADTHING_SECRET=your_uploadthing_secret
+UPLOADTHING_APP_ID=your_uploadthing_app_id
+NEXT_PUBLIC_UPLOADTHING_URL=your_uploadthing_public_url
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000` to view the app.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## 🧐 Future Plans
 
-To learn more about Next.js, take a look at the following resources:
+- User authentication and profiles
+- Like, save, and bookmark hotspots
+- Advanced search and filters
+- Improved review system with ratings
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contributions are welcome!  
+Please fork the repo and submit a pull request.
 
-## Deploy on Vercel
+## 📝 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is licensed under the [MIT License](LICENSE).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+> Made with 💎 by Harsh srivastava
+

@@ -1,3 +1,4 @@
+// app/add-hotspot/page.js
 "use client";
 
 import { useState } from "react";
@@ -13,6 +14,7 @@ export default function AddHotspot() {
     location: "",
     category: "",
     description: "",
+    averageSpend: "", // New field
     image: "", // Will store the uploadthing URL
     addedBy: "Anonymous", // Default value
   });
@@ -26,7 +28,7 @@ export default function AddHotspot() {
     const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [id]: value,
+      [id]: id === "averageSpend" ? (value === "" ? "" : Number(value)) : value,
     }));
 
     // Clear the error for this field when user makes changes
@@ -64,6 +66,13 @@ export default function AddHotspot() {
     if (!formData.category) newErrors.category = "Category is required";
     if (!formData.description.trim())
       newErrors.description = "Description is required";
+
+    // Validate average spend
+    if (formData.averageSpend === "" || isNaN(formData.averageSpend)) {
+      newErrors.averageSpend = "Average spend amount is required";
+    } else if (formData.averageSpend < 0) {
+      newErrors.averageSpend = "Average spend cannot be negative";
+    }
 
     // For image - validate that we have an UploadThing URL
     if (!formData.image) newErrors.image = "An image is required";
@@ -169,7 +178,7 @@ export default function AddHotspot() {
               )}
             </div>
 
-            <div className="md:col-span-2">
+            <div>
               <label
                 htmlFor="category"
                 className="block text-gray-700 font-medium mb-2"
@@ -194,6 +203,32 @@ export default function AddHotspot() {
               </select>
               {errors.category && (
                 <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="averageSpend"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Average Spend per Person ($)
+              </label>
+              <input
+                type="number"
+                id="averageSpend"
+                value={formData.averageSpend}
+                onChange={handleChange}
+                min="0"
+                step="0.01"
+                className={`w-full px-4 py-2 border ${
+                  errors.averageSpend ? "border-red-500" : "border-gray-300"
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                placeholder="25"
+              />
+              {errors.averageSpend && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.averageSpend}
+                </p>
               )}
             </div>
 
