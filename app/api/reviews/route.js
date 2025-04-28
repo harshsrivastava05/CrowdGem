@@ -1,5 +1,5 @@
-import { connectToDatabase } from "@/lib/db/mongodb";
-import Hotspot from "@/lib/db/models/Hotspot";
+import { connectToDatabase } from "../../../lib/db/mongodb"; // Adjust the import path as necessary
+import Hotspot from "../../../lib/db/models/Hotspot"; // Adjust the import path as necessary
 import { NextResponse } from "next/server";
 
 // Add a review to a hotspot

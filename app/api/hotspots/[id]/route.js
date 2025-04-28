@@ -1,11 +1,11 @@
-import { connectToDatabase } from "@/lib/db/mongodb"; 
-import Hotspot from "@/lib/db/models/Hotspot";
+import { connectToDatabase } from "../../../../lib/db/mongodb"; // Adjust the import path as necessar
+import Hotspot from "../../../../lib/db/models/Hotspot"; // Adjust the import path as necessar
 import { NextResponse } from "next/server";
 
 // Get a single hotspot by ID
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     await connectToDatabase();
 
     const hotspot = await Hotspot.findById(id);
