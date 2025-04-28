@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import MapView from "./components/MapView";
 import CategoryButtons from "./components/CategoryButtons";
-import PopularHotspots from "./components/PopularHotspots";
+import PopularHotspots from "./components/features/PopularHotspots";
 import AddHotspotBanner from "./components/AddHotspotBanner";
 import Footer from "./components/Footer";
 
