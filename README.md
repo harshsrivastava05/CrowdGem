@@ -15,12 +15,12 @@ Explore local hotspots, upload your own favorite places, and read real reviews �
 
 ## 🚀 Technologies Used
 
-- **Next.js** (App Router)
-- **React.js**
-- **Tailwind CSS**
-- **MongoDB** (via Mongoose)
-- **UploadThing** (for file uploads)
-- **Vercel** (deployment)
+- **Frontend:** Next.js 15 + React
+- **Backend** Express.js
+- **Styling:** Tailwind CSS
+- **Deployment:** Vercel
+- **File Uploads:** UploadThing
+- **Database:** MongoDB (via Mongoose)
 
 ## 🛠️ Getting Started
 
@@ -69,16 +69,25 @@ Visit `http://localhost:3000` to view the app.
 - Advanced search and filters
 - Improved review system with ratings
 
-## 🤝 Contributing
+## 💡 How You Can Contribute
+We welcome contributions from the open-source community! Please fork the repo and submit a pull request. 
+You can:
+- Add sustainable locations
+- Suggest UI improvements
+- Fix bugs or suggest performance improvements
+- Help with translations or accessibility
 
-Contributions are welcome!  
-Please fork the repo and submit a pull request.
+## 📸 Screenshots
+Coming soon! A look at the homepage, submission form, and map view.
 
-## 📝 License
+## 👨‍💻 Developers
+CrowdGem is proudly built by:
+- Harsh Srivastava
+- Shreya Yadav
+- Ishaan Pathak
+- Sonali
+- Jansi Singh
+- Tanushree Sarkar
 
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-> Made with 💎 by Harsh srivastava
-
+## 🌐 Made with ❤️ in India
+CrowdGem is a passion project built to inspire eco-conscious travel and showcase the hidden gems of India through community participation.
