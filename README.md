@@ -27,8 +27,8 @@ Explore local hotspots, upload your own favorite places, and read real reviews â
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/crowdgem.git
-cd crowdgem
+git clone https://github.com/harshsrivastava05/CrowdGem.git
+cd CrowdGem
 ```
 
 ### 2. Install dependencies
