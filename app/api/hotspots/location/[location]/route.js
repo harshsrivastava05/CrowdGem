@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
   try {
-    const { location } = params;
+    const { location } = await params;
 
     if (!location) {
       return NextResponse.json(
