@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createHotspot } from "../../lib/utils/api-client";
 import UploadThingUploader from "../components/ui/UploadThingUploader";
+import CityAutoSuggest from "../components/ui/CityAutoSuggest";
 
 export default function AddHotspot() {
   const router = useRouter();
@@ -146,9 +147,8 @@ export default function AddHotspot() {
                 id="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`w-full px-4 py-2 border ${errors.name ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 placeholder="Enter the name of the place"
               />
               {errors.name && (
@@ -163,19 +163,11 @@ export default function AddHotspot() {
               >
                 Location
               </label>
-              <input
-                type="text"
-                id="location"
+              <CityAutoSuggest
                 value={formData.location}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border ${
-                  errors.location ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                placeholder="City, State/Country"
+                error={errors.location}
               />
-              {errors.location && (
-                <p className="text-red-500 text-sm mt-1">{errors.location}</p>
-              )}
             </div>
 
             <div>
@@ -189,9 +181,8 @@ export default function AddHotspot() {
                 id="category"
                 value={formData.category}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border ${
-                  errors.category ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`w-full px-4 py-2 border ${errors.category ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 <option value="">Select a category</option>
                 <option value="food">Food</option>
@@ -220,9 +211,8 @@ export default function AddHotspot() {
                 onChange={handleChange}
                 min="0"
                 step="0.01"
-                className={`w-full px-4 py-2 border ${
-                  errors.averageSpend ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`w-full px-4 py-2 border ${errors.averageSpend ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 placeholder="25"
               />
               {errors.averageSpend && (
@@ -244,9 +234,8 @@ export default function AddHotspot() {
                 rows="4"
                 value={formData.description}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border ${
-                  errors.description ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`w-full px-4 py-2 border ${errors.description ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 placeholder="Tell us about this place..."
               ></textarea>
               {errors.description && (

@@ -2,11 +2,11 @@
 
 import { useCallback, useState } from "react";
 import { generateReactHelpers } from "@uploadthing/react";
-import { ourFileRouter } from "../../../lib/uploadthing"
+import { ourFileRouter } from "../../../lib/uploadthing";
 
 const { useUploadThing } = generateReactHelpers(ourFileRouter);
 
-export default function UploadThingUploader({ onUploadComplete }) {
+export default function UploadThingUploader({ onUploadComplete, onUploadError }) {
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
@@ -17,8 +17,15 @@ export default function UploadThingUploader({ onUploadComplete }) {
             setIsUploading(false);
             console.log("Upload response:", res); // Log the complete response
             if (res && res[0]) {
-                onUploadComplete(res[0].url);
+                if (onUploadComplete) {
+                    onUploadComplete(res[0].url);
+                }
                 console.log("Upload completed, url:", res[0].url);
+            } else {
+                setError("Upload response was empty or invalid");
+                if (onUploadError) {
+                    onUploadError(new Error("Upload response was empty or invalid"));
+                }
             }
         },
         onUploadError: (error) => {
@@ -27,6 +34,10 @@ export default function UploadThingUploader({ onUploadComplete }) {
             console.error("Error type:", typeof error);
             console.error("Error stringified:", JSON.stringify(error, null, 2));
             setError(error.message || "Upload failed");
+
+            if (onUploadError) {
+                onUploadError(error);
+            }
         },
     });
 
@@ -45,10 +56,26 @@ export default function UploadThingUploader({ onUploadComplete }) {
     }, []);
 
     const handleUpload = useCallback(() => {
-        if (!file) return;
+        if (!file) {
+            setError("Please select a file first");
+            return;
+        }
+
         setIsUploading(true);
-        startUpload([file]);
-    }, [file, startUpload]);
+        setError("");
+
+        try {
+            console.log("Starting upload for file:", file.name);
+            startUpload([file]);
+        } catch (err) {
+            console.error("Error initiating upload:", err);
+            setError("Failed to start upload: " + (err.message || "Unknown error"));
+            setIsUploading(false);
+            if (onUploadError) {
+                onUploadError(err);
+            }
+        }
+    }, [file, startUpload, onUploadError]);
 
     const handleDrop = useCallback((e) => {
         e.preventDefault();
@@ -116,7 +143,7 @@ export default function UploadThingUploader({ onUploadComplete }) {
             <div className="mt-4 flex justify-center">
                 <button
                     type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-400 disabled:cursor-not-allowed"
                     onClick={handleUpload}
                     disabled={!file || isUploading}
                 >
