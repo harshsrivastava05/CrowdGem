@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { getHotspot, likeHotspot, addReview } from "../../../lib/utils/api-client"; // Adjust the import path as necessary
 // import { getHotspot, likeHotspot, addReview } from "@/lib/utils/api-client";
 
