@@ -16,29 +16,25 @@ export default function ExplorePage() {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const searchParams = useSearchParams();
 
-    // Check for location in URL parameters
     useEffect(() => {
         const locationParam = searchParams.get("location");
         if (locationParam) {
             setLocation(locationParam);
             fetchHotspots(locationParam);
         } else {
-            // Ask for user's location if not provided
             promptForLocation();
         }
     }, [searchParams]);
 
     const promptForLocation = () => {
-        // First try to get browser geolocation
-        if (navigator.geolocation) {
+        if (typeof window !== "undefined" && navigator.geolocation) {
             setLoading(true);
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     try {
-                        // In a real app, you would convert coordinates to city name
-                        // For now, default to Mumbai
-                        setLocation("Mumbai, Maharashtra");
-                        await fetchHotspots("Mumbai, Maharashtra");
+                        const loc = "Mumbai, Maharashtra";
+                        setLocation(loc);
+                        await fetchHotspots(loc);
                     } catch (error) {
                         console.error("Location fetch error:", error);
                     } finally {
@@ -48,27 +44,25 @@ export default function ExplorePage() {
                 (error) => {
                     console.error("Geolocation error:", error);
                     setLoading(false);
-                    // If geolocation fails, show location selector with a default
-                    setLocation("Mumbai, Maharashtra");
-                    fetchHotspots("Mumbai, Maharashtra");
+                    const loc = "Mumbai, Maharashtra";
+                    setLocation(loc);
+                    fetchHotspots(loc);
                 }
             );
         } else {
-            // Browser doesn't support geolocation
-            setLocation("Mumbai, Maharashtra");
-            fetchHotspots("Mumbai, Maharashtra");
+            const loc = "Mumbai, Maharashtra";
+            setLocation(loc);
+            fetchHotspots(loc);
         }
     };
 
     const fetchHotspots = async (loc) => {
         setLoading(true);
         try {
-            // Try to fetch real data from API
             const data = await getHotspotsByLocation(loc);
             setHotspots(data);
         } catch (error) {
             console.error("Error fetching hotspots:", error);
-            // Fallback to mock data if API fails
             const mockHotspots = generateMockHotspots(loc);
             setHotspots(mockHotspots);
         } finally {
@@ -85,7 +79,6 @@ export default function ExplorePage() {
         setSelectedCategory(category);
     };
 
-    // Filter hotspots by selected category
     const filteredHotspots = selectedCategory === "all"
         ? hotspots
         : hotspots.filter(hotspot => hotspot.category === selectedCategory);
@@ -132,7 +125,7 @@ export default function ExplorePage() {
                 ) : filteredHotspots.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                         {filteredHotspots.map((hotspot, i) => (
-                            <HotspotCard key={i} hotspot={hotspot} />
+                            <HotspotCard key={hotspot.id || i} hotspot={hotspot} />
                         ))}
                     </div>
                 ) : (
@@ -147,19 +140,16 @@ export default function ExplorePage() {
     );
 }
 
-// Helper function to generate mock data
 function generateMockHotspots(location) {
     const categories = ["food", "parks", "nightlife", "shopping", "culture", "activities"];
     const mockData = [];
-
-    // Generate between 5-15 mock hotspots
     const count = Math.floor(Math.random() * 10) + 5;
 
     for (let i = 0; i < count; i++) {
         const category = categories[Math.floor(Math.random() * categories.length)];
 
         mockData.push({
-            id: `hotspot-${i}`,
+            id: `hotspot-${i}-${Date.now()}`,
             name: getMockName(category),
             location: location,
             category: category,
@@ -210,7 +200,7 @@ function generateMockReviews() {
         reviews.push({
             user: `User${Math.floor(Math.random() * 1000)}`,
             text: "Great place! Definitely worth checking out.",
-            rating: Math.floor(Math.random() * 2) + 4, // 4-5 star ratings
+            rating: Math.floor(Math.random() * 2) + 4,
         });
     }
 
