@@ -10,7 +10,6 @@ export default function LocationSearch({ onSelect }) {
   const suggestionRef = useRef(null);
 
   useEffect(() => {
-    // Close suggestions when clicking outside
     function handleClickOutside(event) {
       if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
         setShowSuggestions(false);
@@ -49,16 +48,14 @@ export default function LocationSearch({ onSelect }) {
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion.name || suggestion);
     
-    // If suggestion is just a string (city name), create a simplified location object
     if (typeof suggestion === 'string') {
       onSelect({
         name: suggestion,
         address: suggestion,
-        lat: 0, // These would be populated with real data in a production app
+        lat: 0, 
         lng: 0,
       });
     } else {
-      // If suggestion is a location object with all data, pass it directly
       onSelect(suggestion);
     }
     

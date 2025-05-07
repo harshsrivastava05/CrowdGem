@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { getHotspot, likeHotspot, addReview } from "../../../lib/utils/api-client"; // Adjust the import path as necessary
-// import { getHotspot, likeHotspot, addReview } from "@/lib/utils/api-client";
+import { getHotspot, likeHotspot, addReview } from "../../../lib/utils/api-client"; 
 
 export default function HotspotDetail() {
     const params = useParams();
@@ -25,7 +24,6 @@ export default function HotspotDetail() {
             } catch (err) {
                 console.error("Error fetching hotspot:", err);
                 setError("Failed to load hotspot details");
-                // Fallback to sample data
                 setHotspot({
                     _id: id,
                     name: "Sample Hotspot",

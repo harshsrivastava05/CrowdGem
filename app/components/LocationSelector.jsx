@@ -10,7 +10,6 @@ export default function LocationSelector({ currentLocation, onLocationChange, se
     const [isLoading, setIsLoading] = useState(false);
     const searchRef = useRef(null);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(event) {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -24,7 +23,6 @@ export default function LocationSelector({ currentLocation, onLocationChange, se
         };
     }, []);
 
-    // Handle search term changes with debounce
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {
             if (searchTerm.length >= 2) {

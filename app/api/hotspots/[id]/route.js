@@ -1,8 +1,7 @@
-import { connectToDatabase } from "../../../../lib/db/mongodb"; // Adjust the import path as necessar
-import Hotspot from "../../../../lib/db/models/Hotspot"; // Adjust the import path as necessar
+import { connectToDatabase } from "../../../../lib/db/mongodb"; 
+import Hotspot from "../../../../lib/db/models/Hotspot"; 
 import { NextResponse } from "next/server";
 
-// Get a single hotspot by ID
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
@@ -27,7 +26,6 @@ export async function GET(request, { params }) {
   }
 }
 
-// Update a hotspot
 export async function PUT(request, { params }) {
   try {
     const { id } = params;
@@ -56,7 +54,6 @@ export async function PUT(request, { params }) {
   }
 }
 
-// Delete a hotspot
 export async function DELETE(request, { params }) {
   try {
     const { id } = params;

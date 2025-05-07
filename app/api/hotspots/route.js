@@ -2,7 +2,6 @@ import { connectToDatabase } from "../../../lib/db/mongodb";
 import Hotspot from "../../../lib/db/models/Hotspot";
 import { NextResponse } from "next/server";
 
-// Get all hotspots
 export async function GET() {
   try {
     await connectToDatabase();
@@ -18,7 +17,6 @@ export async function GET() {
   }
 }
 
-// Create a new hotspot
 export async function POST(request) {
   try {
     const body = await request.json();

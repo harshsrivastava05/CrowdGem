@@ -1,4 +1,3 @@
-// app/components/SearchBar.jsx
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -13,7 +12,6 @@ export default function SearchBar() {
   const router = useRouter();
 
   useEffect(() => {
-    // Close suggestions when clicking outside
     function handleClickOutside(event) {
       if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
         setShowSuggestions(false);

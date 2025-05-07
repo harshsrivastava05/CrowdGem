@@ -1,9 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUploadthingContext } from "../../../lib/uploadthing/uploadthing-context";
-// import { useUploadThing } from "../../../lib/uploadthing/uploadthing-hooks";
 import LocationSearch from "./LocationSearch";
 
 export default function AddHotspotForm() {
@@ -27,7 +25,6 @@ export default function AddHotspotForm() {
     contactInfo: "",
   });
 
-  // Use the uploadthing hook
   const { startUpload, isUploading } = useUploadthingContext("imageUploader", {
     onClientUploadComplete: (res) => {
       if (res && res[0]?.url) {
@@ -53,7 +50,6 @@ export default function AddHotspotForm() {
     if (file) {
       setSelectedFile(file);
       
-      // Create a preview URL
       const fileReader = new FileReader();
       fileReader.onload = () => {
         setPreviewUrl(fileReader.result);
@@ -92,7 +88,6 @@ export default function AddHotspotForm() {
 
       setSuccess(true);
       
-      // Redirect after a brief delay to show success message
       setTimeout(() => {
         router.push("/");
       }, 2000);
@@ -108,18 +103,15 @@ export default function AddHotspotForm() {
     setIsSubmitting(true);
     setError("");
 
-    // Validate form
     if (!formData.name || !formData.description || !formData.category || !formData.location) {
       setError("Please fill out all required fields");
       setIsSubmitting(false);
       return;
     }
 
-    // Upload image if selected
     if (selectedFile) {
       await startUpload([selectedFile]);
     } else {
-      // Submit form without image
       submitFormWithImage("");
     }
   };

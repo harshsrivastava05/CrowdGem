@@ -12,10 +12,8 @@ export default function HotspotCard({ hotspot, showAvgSpend = false }) {
     e.preventDefault();
     e.stopPropagation();
     
-    // Toggle like status
     setIsLiked(!isLiked);
     
-    // Optimistically update the UI
     if (isLiked) {
       setLikes(likes - 1);
     } else {
@@ -33,7 +31,6 @@ export default function HotspotCard({ hotspot, showAvgSpend = false }) {
     // }
   };
 
-  // Set category badge color
   const getCategoryColor = (category) => {
     const colors = {
       food: "bg-red-100 text-red-800",

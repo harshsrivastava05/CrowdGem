@@ -1,4 +1,3 @@
-// app/components/ui/CityAutoSuggest.jsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -12,7 +11,6 @@ export default function CityAutoSuggest({ value, onChange, error }) {
     const suggestionsRef = useRef(null);
 
     useEffect(() => {
-        // Close suggestions when clicking outside
         const handleClickOutside = (event) => {
             if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
                 setShowSuggestions(false);
@@ -43,7 +41,6 @@ export default function CityAutoSuggest({ value, onChange, error }) {
             }
         };
 
-        // Add debounce to avoid too many requests
         const debounceTimer = setTimeout(fetchSuggestions, 300);
         return () => clearTimeout(debounceTimer);
     }, [inputValue]);

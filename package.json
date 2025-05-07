@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^15.3.1",
     "@uploadthing/react": "^7.3.0",
     "lucide-react": "^0.503.0",
     "mongoose": "^8.14.0",

@@ -1,4 +1,3 @@
-// app/add-hotspot/page.js
 "use client";
 
 import { useState } from "react";
@@ -15,9 +14,9 @@ export default function AddHotspot() {
     location: "",
     category: "",
     description: "",
-    averageSpend: "", // New field
-    image: "", // Will store the uploadthing URL
-    addedBy: "Anonymous", // Default value
+    averageSpend: "", 
+    image: "", 
+    addedBy: "Anonymous", 
   });
 
   const [errors, setErrors] = useState({});
@@ -32,7 +31,6 @@ export default function AddHotspot() {
       [id]: id === "averageSpend" ? (value === "" ? "" : Number(value)) : value,
     }));
 
-    // Clear the error for this field when user makes changes
     if (errors[id]) {
       setErrors((prev) => ({
         ...prev,
@@ -49,7 +47,6 @@ export default function AddHotspot() {
 
     setImagePreview(url);
 
-    // Clear error if there was one
     if (errors.image) {
       setErrors((prev) => ({
         ...prev,
@@ -61,21 +58,18 @@ export default function AddHotspot() {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validate required fields
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.location.trim()) newErrors.location = "Location is required";
     if (!formData.category) newErrors.category = "Category is required";
     if (!formData.description.trim())
       newErrors.description = "Description is required";
 
-    // Validate average spend
     if (formData.averageSpend === "" || isNaN(formData.averageSpend)) {
       newErrors.averageSpend = "Average spend amount is required";
     } else if (formData.averageSpend < 0) {
       newErrors.averageSpend = "Average spend cannot be negative";
     }
 
-    // For image - validate that we have an UploadThing URL
     if (!formData.image) newErrors.image = "An image is required";
 
     setErrors(newErrors);
@@ -91,10 +85,8 @@ export default function AddHotspot() {
     setSubmitError("");
 
     try {
-      // Since we already have the uploaded image URL, we can directly create the hotspot
       const hotspot = await createHotspot(formData);
 
-      // Success! Navigate to the newly created hotspot
       router.push(`/hotspot/${hotspot._id}`);
     } catch (error) {
       console.error("Error submitting hotspot:", error);

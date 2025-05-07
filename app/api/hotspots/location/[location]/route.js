@@ -1,4 +1,3 @@
-// app/api/hotspots/location/[location]/route.js
 import { connectToDatabase } from "../../../../../lib/db/mongodb";
 import Hotspot from "../../../../../lib/db/models/Hotspot";
 import { NextResponse } from "next/server";
@@ -14,11 +13,8 @@ export async function GET(request, { params }) {
       );
     }
 
-    // Connect to the database
     await connectToDatabase();
 
-    // We use a case-insensitive regex match to find hotspots in the given location
-    // This will match any hotspot where the location field contains the provided location string
     const hotspots = await Hotspot.find({
       location: { $regex: new RegExp(location, "i") },
     });

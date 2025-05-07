@@ -9,7 +9,6 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
 
-    // Handle scroll event to change navbar appearance
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 10) {
@@ -29,7 +28,6 @@ export default function Navbar() {
         setIsOpen(!isOpen);
     };
 
-    // Close mobile menu when navigating
     useEffect(() => {
         setIsOpen(false);
     }, [pathname]);
