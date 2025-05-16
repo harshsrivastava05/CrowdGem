@@ -22,6 +22,8 @@ Explore local hotspots, upload your own favorite places, and read real reviews �
 - **UploadThing** (for file uploads)
 - **Vercel** (deployment)
 
+## Watch video demo [by clicking here](https://youtu.be/nRF8f1upGJU)
+
 ## 🛠️ Getting Started
 
 ### 1. Clone the repository
