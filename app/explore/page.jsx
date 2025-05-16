@@ -16,14 +16,12 @@ export default function ExplorePage() {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const searchParams = useSearchParams();
 
-    // Check for location in URL parameters
     useEffect(() => {
         const locationParam = searchParams.get("location");
         if (locationParam) {
             setLocation(locationParam);
             fetchHotspots(locationParam);
         } else {
-            // Ask for user's location if not provided
             promptForLocation();
         }
     }, [searchParams]);
@@ -35,8 +33,6 @@ export default function ExplorePage() {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     try {
-                        // In a real app, you would convert coordinates to city name
-                        // For now, default to Mumbai
                         setLocation("Mumbai, Maharashtra");
                         await fetchHotspots("Mumbai, Maharashtra");
                     } catch (error) {
@@ -48,13 +44,11 @@ export default function ExplorePage() {
                 (error) => {
                     console.error("Geolocation error:", error);
                     setLoading(false);
-                    // If geolocation fails, show location selector with a default
                     setLocation("Mumbai, Maharashtra");
                     fetchHotspots("Mumbai, Maharashtra");
                 }
             );
         } else {
-            // Browser doesn't support geolocation
             setLocation("Mumbai, Maharashtra");
             fetchHotspots("Mumbai, Maharashtra");
         }
@@ -63,12 +57,10 @@ export default function ExplorePage() {
     const fetchHotspots = async (loc) => {
         setLoading(true);
         try {
-            // Try to fetch real data from API
             const data = await getHotspotsByLocation(loc);
             setHotspots(data);
         } catch (error) {
             console.error("Error fetching hotspots:", error);
-            // Fallback to mock data if API fails
             const mockHotspots = generateMockHotspots(loc);
             setHotspots(mockHotspots);
         } finally {

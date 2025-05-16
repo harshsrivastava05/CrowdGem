@@ -18,44 +18,37 @@ export default function SearchResults() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Filter state
     const [filters, setFilters] = useState({
         category: "",
         minBudget: "",
         maxBudget: "",
-        sortBy: "likes", // Default sort by most liked
+        sortBy: "likes",
     });
 
     useEffect(() => {
-        async function fetchHotspots() {
-            if (!locationQuery) return;
+        if (!locationQuery) return;
+        setLoading(true);
 
-            setLoading(true);
-            try {
-                const data = await getHotspotsByLocation(locationQuery);
+        getHotspotsByLocation(locationQuery)
+            .then((data) => {
                 setHotspots(data);
                 setFilteredHotspots(data);
-            } catch (err) {
-                console.error("Error fetching hotspots:", err);
+            })
+            .catch(() => {
                 setError("Failed to load hotspots for this location");
-            } finally {
+            })
+            .finally(() => {
                 setLoading(false);
-            }
-        }
-
-        fetchHotspots();
+            });
     }, [locationQuery]);
 
     useEffect(() => {
-        // Apply filters
         let results = [...hotspots];
 
-        // Apply category filter
         if (filters.category) {
             results = results.filter(spot => spot.category === filters.category);
         }
 
-        // Apply budget filters
         if (filters.minBudget !== "") {
             results = results.filter(spot => spot.averageSpend >= Number(filters.minBudget));
         }
@@ -64,7 +57,6 @@ export default function SearchResults() {
             results = results.filter(spot => spot.averageSpend <= Number(filters.maxBudget));
         }
 
-        // Apply sorting
         if (filters.sortBy === "likes") {
             results.sort((a, b) => b.likes - a.likes);
         } else if (filters.sortBy === "priceAsc") {
@@ -77,7 +69,7 @@ export default function SearchResults() {
     }, [filters, hotspots]);
 
     const handleFilterChange = (newFilters) => {
-        setFilters({ ...filters, ...newFilters });
+        setFilters(prev => ({ ...prev, ...newFilters }));
     };
 
     return (
@@ -85,34 +77,21 @@ export default function SearchResults() {
             <Header />
             <div className="container mx-auto px-4 py-8">
                 <Link href="/" className="inline-flex items-center text-blue-600 mb-6">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                    >
-                        <path
-                            fillRule="evenodd"
-                            d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
-                            clipRule="evenodd"
-                        />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
                     </svg>
                     Back to Home
                 </Link>
 
                 <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-                    <h1 className="text-3xl font-bold">
-                        Hotspots in {locationQuery}
-                    </h1>
+                    <h1 className="text-3xl font-bold">Hotspots in {locationQuery}</h1>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Filters sidebar */}
                     <div className="lg:w-1/4">
                         <SearchFilters onFilterChange={handleFilterChange} />
                     </div>
 
-                    {/* Results area */}
                     <div className="lg:w-3/4">
                         {loading ? (
                             <div className="flex justify-center py-20">
@@ -132,7 +111,9 @@ export default function SearchResults() {
                             </div>
                         ) : (
                             <div>
-                                <p className="mb-4 text-gray-600">{filteredHotspots.length} hotspot{filteredHotspots.length !== 1 ? 's' : ''} found</p>
+                                <p className="mb-4 text-gray-600">
+                                    {filteredHotspots.length} hotspot{filteredHotspots.length !== 1 ? "s" : ""} found
+                                </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {filteredHotspots.map((hotspot) => (
                                         <HotspotCard
