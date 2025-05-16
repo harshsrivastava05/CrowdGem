@@ -76,11 +76,6 @@ Visit `http://localhost:3000` to view the app.
 Contributions are welcome!  
 Please fork the repo and submit a pull request.
 
-## 📝 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
 
 > Made with 💎 by Harsh srivastava
 
