@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingExplore from "./LoadingExplore";
-import ExploreClient from "./ExploreClient"; // the client component
+import ExploreClient from "./ExploreContent"; 
 
 export default function ExplorePage() {
     return (
