@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { getHotspotsByLocation } from "../../lib/utils/api-client";
 import { searchCities } from "../../lib/utils/location-utils";
@@ -9,7 +9,8 @@ import CategoryFilter from "../components/CategoryFilter";
 import HotspotCard from "../components/HotspotCard";
 import { MapPinIcon } from "lucide-react";
 
-export default function ExplorePage() {
+// Create a separate client component for the part that uses useSearchParams
+function ExploreContent() {
     const [hotspots, setHotspots] = useState([]);
     const [location, setLocation] = useState("");
     const [loading, setLoading] = useState(false);
@@ -83,6 +84,64 @@ export default function ExplorePage() {
         : hotspots.filter(hotspot => hotspot.category === selectedCategory);
 
     return (
+        <>
+            <div className="mb-8">
+                <LocationSelector
+                    currentLocation={location}
+                    onLocationChange={handleLocationChange}
+                    searchCities={searchCities}
+                />
+            </div>
+
+            {location && (
+                <div className="flex items-center justify-center mb-6">
+                    <MapPinIcon className="w-5 h-5 text-blue-600 mr-2" />
+                    <h2 className="text-xl font-medium text-gray-700">
+                        Exploring gems in <span className="text-blue-600 font-semibold">{location}</span>
+                    </h2>
+                </div>
+            )}
+
+            <CategoryFilter
+                selectedCategory={selectedCategory}
+                onCategoryChange={handleCategoryChange}
+            />
+
+            {loading ? (
+                <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Loading hotspots...</p>
+                </div>
+            ) : filteredHotspots.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                    {filteredHotspots.map((hotspot, i) => (
+                        <HotspotCard key={i} hotspot={hotspot} />
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                    <p className="text-gray-600">
+                        No hotspots found in this area for the selected category. Be the first to add one!
+                    </p>
+                </div>
+            )}
+        </>
+    );
+}
+
+// Loading fallback component
+function LoadingExplore() {
+    return (
+        <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading explore page...</p>
+        </div>
+    );
+}
+
+// Main page component that wraps the content in a Suspense boundary
+export default function ExplorePage() {
+    return (
         <div className="min-h-screen bg-gray-50 pt-8">
             <div className="container mx-auto px-4 py-8">
                 <div className="mb-8 text-center">
@@ -94,46 +153,9 @@ export default function ExplorePage() {
                     </p>
                 </div>
 
-                <div className="mb-8">
-                    <LocationSelector
-                        currentLocation={location}
-                        onLocationChange={handleLocationChange}
-                        searchCities={searchCities}
-                    />
-                </div>
-
-                {location && (
-                    <div className="flex items-center justify-center mb-6">
-                        <MapPinIcon className="w-5 h-5 text-blue-600 mr-2" />
-                        <h2 className="text-xl font-medium text-gray-700">
-                            Exploring gems in <span className="text-blue-600 font-semibold">{location}</span>
-                        </h2>
-                    </div>
-                )}
-
-                <CategoryFilter
-                    selectedCategory={selectedCategory}
-                    onCategoryChange={handleCategoryChange}
-                />
-
-                {loading ? (
-                    <div className="text-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                        <p className="mt-4 text-gray-600">Loading hotspots...</p>
-                    </div>
-                ) : filteredHotspots.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                        {filteredHotspots.map((hotspot, i) => (
-                            <HotspotCard key={i} hotspot={hotspot} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-                        <p className="text-gray-600">
-                            No hotspots found in this area for the selected category. Be the first to add one!
-                        </p>
-                    </div>
-                )}
+                <Suspense fallback={<LoadingExplore />}>
+                    <ExploreContent />
+                </Suspense>
             </div>
         </div>
     );
