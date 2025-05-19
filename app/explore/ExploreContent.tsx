@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { getHotspotsByLocation } from "../../lib/utils/api-client";
 import { searchCities } from "../../lib/utils/location-utils";
 import LocationSelector from "../components/LocationSelector";
@@ -9,7 +9,7 @@ import CategoryFilter from "../components/CategoryFilter";
 import HotspotCard from "../components/HotspotCard";
 import { MapPinIcon } from "lucide-react";
 
-export default function ExploreContent() {
+export default function ExploreClient() {
   const [hotspots, setHotspots] = useState([]);
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,19 +32,22 @@ export default function ExploreContent() {
       setLoading(true);
       navigator.geolocation.getCurrentPosition(
         async () => {
-          setLocation("Mumbai, Maharashtra");
-          await fetchHotspots("Mumbai, Maharashtra");
+          const defaultLoc = "Mumbai, Maharashtra";
+          setLocation(defaultLoc);
+          await fetchHotspots(defaultLoc);
           setLoading(false);
         },
         () => {
-          setLocation("Mumbai, Maharashtra");
-          fetchHotspots("Mumbai, Maharashtra");
+          const fallbackLoc = "Mumbai, Maharashtra";
+          setLocation(fallbackLoc);
+          fetchHotspots(fallbackLoc);
           setLoading(false);
         }
       );
     } else {
-      setLocation("Mumbai, Maharashtra");
-      fetchHotspots("Mumbai, Maharashtra");
+      const defaultLoc = "Mumbai, Maharashtra";
+      setLocation(defaultLoc);
+      fetchHotspots(defaultLoc);
     }
   };
 
@@ -53,21 +56,20 @@ export default function ExploreContent() {
     try {
       const data = await getHotspotsByLocation(loc);
       setHotspots(data);
-    } catch (error) {
-      console.error("Error fetching hotspots:", error);
+    } catch {
       setHotspots(generateMockHotspots(loc));
     } finally {
       setLoading(false);
     }
   };
 
-  const handleLocationChange = async (newLocation: string) => {
-    setLocation(newLocation);
-    await fetchHotspots(newLocation);
+  const handleLocationChange = async (newLoc: string) => {
+    setLocation(newLoc);
+    await fetchHotspots(newLoc);
   };
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+  const handleCategoryChange = (cat: string) => {
+    setSelectedCategory(cat);
   };
 
   const filteredHotspots =
@@ -123,7 +125,7 @@ export default function ExploreContent() {
   );
 }
 
-// Helpers
+// Same helpers for mock data
 function generateMockHotspots(location: string) {
   const categories = [
     "food",

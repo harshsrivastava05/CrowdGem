@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingExplore from "./LoadingExplore";
-import ExploreContent from "./ExploreContent";
+import ExploreClient from "./ExploreClient"; // the client component
 
 export default function ExplorePage() {
     return (
@@ -16,7 +16,7 @@ export default function ExplorePage() {
                 </div>
 
                 <Suspense fallback={<LoadingExplore />}>
-                    <ExploreContent />
+                    <ExploreClient />
                 </Suspense>
             </div>
         </div>
